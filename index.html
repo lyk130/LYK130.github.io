@@ -3,165 +3,321 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LYK130 | 赛博空间</title>
+    <title>LYK130 | 系统终端</title>
     <style>
-        /* --- 基础重置 --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* --- 核心样式：赛博朋克暗黑风 --- */
+        :root {
+            --primary-color: #0ff; /* 青色霓虹 */
+            --secondary-color: #f0f; /* 洋红霓虹 */
+            --bg-color: #050505;
+            --grid-color: rgba(0, 255, 255, 0.08);
+        }
 
-        /* --- 赛博背景 --- */
         body {
-            background-color: #050505;
-            /* 创建网格背景 */
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            /* 科技感网格背景 */
             background-image:
-                linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
             background-size: 40px 40px;
-            /* 背景透视感 */
-            perspective: 500px;
             font-family: 'Courier New', Courier, monospace;
-            color: #fff;
+            color: var(--primary-color);
             height: 100vh;
-            overflow: hidden; /* 防止滚动条 */
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative;
+            overflow: hidden;
         }
 
-        /* --- 装饰性扫描线 --- */
-        body::after {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, transparent 50%, rgba(0, 255, 255, 0.05) 51%);
-            background-size: 100% 4px;
-            pointer-events: none;
-            z-index: 10;
-            animation: scan 4s linear infinite;
-        }
-
-        /* --- 主容器 --- */
-        .cyber-container {
+        /* --- 主容器：全息面板 --- */
+        .cyber-panel {
             position: relative;
-            z-index: 2;
+            width: 420px;
+            padding: 40px;
+            border: 1px solid var(--primary-color);
+            background: rgba(5, 5, 5, 0.85);
+            box-shadow: 0 0 15px var(--primary-color), inset 0 0 20px rgba(0, 255, 255, 0.1);
             text-align: center;
-            border: 1px solid #0ff;
-            padding: 40px 60px;
-            background: rgba(0, 10, 20, 0.85);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2), inset 0 0 20px rgba(0, 255, 255, 0.1);
-            backdrop-filter: blur(5px);
-            clip-path: polygon(
-                20px 0, 100% 0,
-                100% calc(100% - 20px), calc(100% - 20px) 100%,
-                0 100%, 0 20px
-            );
-            max-width: 600px;
-            width: 90%;
+            /* 3D透视效果 */
+            transform: perspective(800px) rotateX(5deg);
+            transition: transform 0.3s;
         }
 
-        /* --- 故障文字效果 --- */
-        .glitch-title {
-            font-size: 3rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            position: relative;
-            color: #fff;
+        .cyber-panel:hover {
+            transform: perspective(800px) rotateX(0deg);
+            box-shadow: 0 0 25px var(--primary-color), inset 0 0 30px rgba(0, 255, 255, 0.2);
+        }
+
+        /* --- 标题：故障文字效果 --- */
+        h1 {
+            font-size: 3em;
             letter-spacing: 5px;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px #ff00ff, -2px -2px #00ffff;
-            animation: glitch 1s infinite alternate;
+            margin-bottom: 10px;
+            position: relative;
+            text-shadow: 2px 2px var(--secondary-color);
         }
 
-        /* --- 描述文字 --- */
-        .subtitle {
-            color: #0ff;
-            font-size: 1rem;
-            margin-bottom: 40px;
-            border-bottom: 1px dashed #0ff;
-            padding-bottom: 20px;
-            display: inline-block;
+        .status-text {
+            font-size: 0.8em;
             opacity: 0.8;
+            border-bottom: 1px dashed var(--primary-color);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            display: inline-block;
+            width: 100%;
         }
 
-        /* --- 霓虹按钮组 --- */
+        /* --- 日期显示区域 --- */
+        .date-container {
+            background: rgba(0, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            padding: 15px;
+            margin-bottom: 30px;
+            font-size: 0.9em;
+            text-align: left;
+            position: relative;
+        }
+
+        .date-label {
+            color: var(--secondary-color);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .date-row {
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* --- 按钮组 --- */
         .btn-group {
             display: flex;
             flex-direction: column;
             gap: 20px;
-            align-items: center;
         }
 
         .cyber-btn {
-            text-decoration: none;
-            color: #fff;
-            font-size: 1.1rem;
-            font-weight: bold;
-            padding: 12px 30px;
-            border: 1px solid #ff00ff;
             background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            padding: 12px 20px;
+            font-family: inherit;
+            font-size: 1em;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
             position: relative;
             overflow: hidden;
             transition: 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            width: 200px;
-            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+            text-decoration: none; /* 去掉下划线 */
         }
 
-        /* 按钮悬停特效 */
         .cyber-btn:hover {
-            background: #ff00ff;
-            box-shadow: 0 0 20px #ff00ff;
+            background: var(--primary-color);
             color: #000;
-            text-shadow: none;
-            transform: scale(1.05);
+            box-shadow: 0 0 15px var(--primary-color);
         }
 
-        .cyber-btn:nth-child(2) {
-            border-color: #0ff;
-            color: #0ff;
+        /* 按钮装饰角 */
+        .cyber-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: 0.5s;
         }
 
-        .cyber-btn:nth-child(2):hover {
-            background: #0ff;
-            box-shadow: 0 0 20px #0ff;
-            color: #000;
+        .cyber-btn:hover::before {
+            left: 100%;
         }
 
-        /* --- 动画定义 --- */
+        /* --- 装饰性扫描线 --- */
+        .scanline {
+            width: 100%;
+            height: 5px;
+            background: rgba(0, 255, 255, 0.3);
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: scan 3s linear infinite;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
         @keyframes scan {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100%); }
+            0% { top: 0; }
+            100% { top: 100%; }
         }
 
-        @keyframes glitch {
-            0% { text-shadow: 2px 2px #ff00ff, -2px -2px #00ffff; transform: skew(0deg); }
-            20% { text-shadow: -2px 2px #ff00ff, 2px 2px #00ffff; transform: skew(10deg); }
-            40% { text-shadow: 2px -2px #ff00ff, -2px -2px #00ffff; transform: skew(-10deg); }
-            60% { text-shadow: -2px -2px #ff00ff, 2px 2px #00ffff; transform: skew(0deg); }
-            100% { text-shadow: 2px 2px #ff00ff, -2px -2px #00ffff; transform: skew(0deg); }
-        }
-
-        /* 响应式调整 */
-        @media (max-width: 600px) {
-            .glitch-title { font-size: 2rem; }
-            .cyber-container { padding: 30px 20px; }
-        }
     </style>
 </head>
 <body>
 
-    <div class="cyber-container">
-        <h1 class="glitch-title">LYK130</h1>
-        <p class="subtitle">SYSTEM ONLINE // WELCOME TO MY DOMAIN</p>
+    <div class="cyber-panel">
+        <!-- 扫描线动画 -->
+        <div class="scanline"></div>
+
+        <h1>LYK130</h1>
+        <div class="status-text">SYSTEM ONLINE // WELCOME TO MY DOMAIN</div>
+
+        <!-- 日期显示区域 -->
+        <div class="date-container">
+            <div class="date-row">
+                <span><span class="date-label">></span>DATE (Gregorian):</span>
+                <span id="gregorian-date">Loading...</span>
+            </div>
+            <div class="date-row">
+                <span><span class="date-label">></span>WEEKDAY:</span>
+                <span id="weekday">Loading...</span>
+            </div>
+            <div class="date-row" style="border-top: 1px dashed rgba(0,255,255,0.3); margin-top:5px; padding-top:5px;">
+                <span><span class="date-label">></span>LUNAR (Chinese):</span>
+                <span id="lunar-date">Calculating...</span>
+            </div>
+        </div>
 
         <div class="btn-group">
-            <!-- 这里的 href 对应你创建的其他文件名 -->
+            <!-- 这里的 href 指向你其他的 HTML 文件 -->
             <a href="profile.html" class="cyber-btn">进入个人档案</a>
-            <a href="project.html" class="cyber-btn">查看项目数据</a>
             <a href="blog.html" class="cyber-btn">访问日志库</a>
+            <a href="#" class="cyber-btn">加密通讯</a>
         </div>
     </div>
 
+    <script>
+        // --- 农历数据与算法 (简化版) ---
+        // 这是一个轻量级的农历计算逻辑，无需外部库
+        const lunarInfo = [
+            0x04bd8,0x04ae0,0x0a570,0x054d5,0x0d260,0x0d950,0x16554,0x056a0,0x09ad0,0x055d2,
+            0x04ae0,0x0a5b6,0x0a4d0,0x0d250,0x1d255,0x0b540,0x0d6a0,0x0ada2,0x095b0,0x14977,
+            0x04970,0x0a4b0,0x0b4b5,0x06a50,0x06d40,0x1ab54,0x02b60,0x09570,0x052f2,0x04970,
+            0x06566,0x0d4a0,0x0ea50,0x06e95,0x05ad0,0x02b60,0x186e3,0x092e0,0x1c8d7,0x0c950,
+            0x0d4a0,0x1d8a6,0x0b550,0x056a0,0x1a5b4,0x025d0,0x092d0,0x0d2b2,0x0a950,0x0b557,
+            0x06ca0,0x0b550,0x15355,0x04da0,0x0a5d0,0x14573,0x052d0,0x0a9a8,0x0e950,0x06aa0,
+            0x0aea6,0x0ab50,0x04b60,0x0aae4,0x0a570,0x05260,0x0f263,0x0d950,0x05b57,0x056a0,
+            0x096d0,0x04dd5,0x04ad0,0x0a4d0,0x0d4d4,0x0d250,0x0d558,0x0b540,0x0b5a0,0x195a6,
+            0x095b0,0x049b0,0x0a974,0x0a4b0,0x0b27a,0x06a50,0x06d40,0x0af46,0x0ab60,0x09570,
+            0x04af5,0x04970,0x064b0,0x074a3,0x0ea50,0x06b58,0x055c0,0x0ab60,0x096d5,0x092e0,
+            0x0c960,0x0d954,0x0d4a0,0x0da50,0x07552,0x056a0,0x0abb7,0x025d0,0x092d0,0x0cab5,
+            0x0a950,0x0b4a0,0x0baa4,0x0ad50,0x055d9,0x04ba0,0x0a5b0,0x15176,0x052b0,0x0a930,
+            0x07954,0x06aa0,0x0ad50,0x05b52,0x04b60,0x0a6e6,0x0a4e0,0x0d260,0x0ea65,0x0d530,
+            0x05aa0,0x076a3,0x096d0,0x04bd7,0x04ad0,0x0a4d0,0x1d0b6,0x0d250,0x0d520,0x0dd45,
+            0x0b5a0,0x056d0,0x055b2,0x049b0,0x0a577,0x0a4b0,0x0aa50,0x1b255,0x06d20,0x0ada0
+        ];
+        const Gan = ["甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"];
+        const Zhi = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"];
+        const Animals = ["鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪"];
+        const nStr1 = ["日", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"];
+        const nStr2 = ["初", "十", "廿", "卅", "正"];
+        const monthName = ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "腊"];
+
+        function GetBit(m, n) { return (m >> n) & 1; }
+
+        function LunarCalendar(y, m, d) {
+            let i, leap = 0, temp = 0;
+            let offset = (Date.UTC(y, m - 1, d) - Date.UTC(1900, 0, 31)) / 86400000;
+            let year = 1900;
+
+            // 计算农历年份
+            for (i = 1900; i < 2100 && offset > 0; i++) {
+                temp = (lunarInfo[i - 1900] < 0x10000) ? 12 : 13;
+                if (offset < temp) break;
+                offset -= temp;
+                year++;
+            }
+
+            // 计算闰月
+            leap = (lunarInfo[year - 1900] & 0xf);
+            if (leap == 0) leap = 13;
+
+            // 计算农历月份和日期
+            let month = 1;
+            let day = 1;
+            let isLeap = false;
+
+            for (i = 1; i <= temp; i++) {
+                let daysInMonth = GetBit(lunarInfo[year - 1900], 16 - i) ? 30 : 29;
+                if (offset < daysInMonth) {
+                    day = offset + 1;
+                    break;
+                }
+                offset -= daysInMonth;
+                if (i == leap) {
+                    isLeap = !isLeap;
+                    i--; // 闰月处理
+                } else {
+                    month++;
+                }
+            }
+
+            return {
+                year: year,
+                month: month,
+                day: day,
+                isLeap: isLeap
+            };
+        }
+
+        function GetLunarDateString(lunarObj) {
+            let y = lunarObj.year;
+            let m = lunarObj.month;
+            let d = lunarObj.day;
+            let isLeap = lunarObj.isLeap;
+
+            let cy = Gan[(y - 4) % 10] + Zhi[(y - 4) % 12] + "年";
+            let cm = (isLeap ? "闰" : "") + (m == 1 && !isLeap ? "正" : monthName[m - 1]) + "月";
+            let cd = "";
+
+            if (d <= 10) {
+                cd = nStr2[0] + nStr1[d];
+            } else if (d > 10 && d < 20) {
+                cd = "十" + nStr1[d - 10];
+            } else if (d == 20) {
+                cd = "二十";
+            } else if (d > 20 && d < 30) {
+                cd = "廿" + nStr1[d - 20];
+            } else {
+                cd = "三十";
+            }
+
+            return cy + cm + cd;
+        }
+
+        // --- 主逻辑：更新时间 ---
+        function updateClock() {
+            const now = new Date();
+
+            // 1. 公历格式化
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const date = String(now.getDate()).padStart(2, '0');
+            const gregorianStr = `${year}-${month}-${date}`;
+
+            // 2. 星期格式化
+            const weekDays = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+            const weekStr = weekDays[now.getDay()];
+
+            // 3. 农历计算
+            const lunarObj = LunarCalendar(year, parseInt(month), parseInt(date));
+            const lunarStr = GetLunarDateString(lunarObj);
+
+            // 4. 写入DOM
+            document.getElementById('gregorian-date').innerText = gregorianStr;
+            document.getElementById('weekday').innerText = weekStr;
+            document.getElementById('lunar-date').innerText = lunarStr;
+        }
+
+        // 初始化
+        updateClock();
+        // 每分钟检查一次（因为农历不需要每秒刷新）
+        setInterval(updateClock, 60000);
+
+    </script>
 </body>
 </html>
